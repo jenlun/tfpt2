@@ -21,6 +21,7 @@ namespace TFSPowerTools2
         public string GetTransformedAnnotation()
         {
             var sb = new StringBuilder();
+            //TODO: simplify, ^(\d{1,5}) and replace everything at once, not line by line.
             var regex = new Regex(@"^(\d{1,5})(.*$)");
             using (var reader = new StringReader(this.annotateOutput))
             {
