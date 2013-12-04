@@ -23,7 +23,6 @@
         {
             var changeSets = new ChangeSets();
             changeSets.AddHistory(History);
-            //Assert.AreEqual(4, changeSets.Count);
 
             Assert.AreEqual(@"28, XXXXXXX\mica1, 10/11/2013", changeSets.Get("28"));
 
