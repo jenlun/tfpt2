@@ -8,7 +8,7 @@ namespace TFSPowerTools2
 
     public class ChangeSets
     {
-        private readonly string tempFilePath = Path.GetTempPath() + "changesets.tmp";
+        private static readonly string TempFilePath = Path.GetTempPath() + "changesets.tmp";
         private Dictionary<int, ChangeSetDetails> csd = new Dictionary<int, ChangeSetDetails>();
 
         public ChangeSets()
@@ -22,6 +22,11 @@ namespace TFSPowerTools2
             {
                 return this.csd.Values.Count;
             }
+        }
+
+        public static void ClearCache()
+        {
+            File.Delete(TempFilePath);
         }
 
         public string Get(string stringKey)
@@ -39,7 +44,7 @@ namespace TFSPowerTools2
         {
             using (new GlobalLock(2000))
             {
-                using (Stream stream = File.Open(this.tempFilePath, FileMode.Create))
+                using (Stream stream = File.Open(TempFilePath, FileMode.Create))
                 {
                     var bformatter = new BinaryFormatter();
 
@@ -53,12 +58,19 @@ namespace TFSPowerTools2
         {
             using (new GlobalLock(2000))
             {
-                using (var stream = File.Open(this.tempFilePath, FileMode.Open))
+                try
                 {
-                    var bformatter = new BinaryFormatter();
+                    using (var stream = File.Open(TempFilePath, FileMode.Open))
+                    {
+                        var bformatter = new BinaryFormatter();
 
-                    this.csd = (Dictionary<int, ChangeSetDetails>)bformatter.Deserialize(stream);
-                    stream.Close();
+                        this.csd = (Dictionary<int, ChangeSetDetails>)bformatter.Deserialize(stream);
+                        stream.Close();
+                    }
+                }
+                catch (FileNotFoundException)
+                {
+                    // ignore first time
                 }
             }
         }

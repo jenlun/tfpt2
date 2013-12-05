@@ -1,7 +1,5 @@
 ﻿namespace TfPt2.Tests
 {
-    using System;
-
     using NUnit.Framework;
 
     using TFSPowerTools2;
@@ -28,7 +26,19 @@
 
             var transform = new TransformAnnotation(changeSets, AnnotatedLine);
             var transformed = transform.GetTransformedAnnotation();
-            Assert.AreEqual(@"28, XXXXXXX\mica1, 10/11/2013           public class BasketballGameActionHandler : IGameActionHandler" + Environment.NewLine, transformed);
+            Assert.AreEqual(@"28, XXXXXXX\mica1, 10/11/2013           public class BasketballGameActionHandler : IGameActionHandler", transformed);
+        }
+
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            ChangeSets.ClearCache();
+        }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            ChangeSets.ClearCache();
         }
     }
 }
