@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChangeSetDetails.cs" />
     <Compile Include="ChangeSets.cs" />
     <Compile Include="GlobalLock.cs" />
     <Compile Include="Program.cs" />

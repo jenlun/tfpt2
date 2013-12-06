@@ -14,7 +14,7 @@
 21579     merge, edit                XXXXXXX\mica1     5/29/2013  Merge for week 20 Hypermarket QA deploy
 19493     merge, branch              XXXXXXX\joil      3/18/2013  SBI-179 Sporting Solution Game Action/ Result Refactoring";
 
-        private static readonly string AnnotatedLine = @"28           public class BasketballGameActionHandler : IGameActionHandler";
+        private const string AnnotatedLine = @"28           public class BasketballGameActionHandler : IGameActionHandler";
 
         [Test]
         public void ParseHistory()

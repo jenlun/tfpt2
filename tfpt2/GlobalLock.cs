@@ -7,7 +7,7 @@
     using System.Security.Principal;
     using System.Threading;
 
-    public class GlobalLock : IDisposable
+    public sealed class GlobalLock : IDisposable
     {
         private readonly bool hasHandle;
 

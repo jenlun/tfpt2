@@ -16,14 +16,6 @@ namespace TFSPowerTools2
             this.RestoreSavedState();
         }
 
-        public int Count
-        {
-            get
-            {
-                return this.csd.Values.Count;
-            }
-        }
-
         public static void ClearCache()
         {
             File.Delete(TempFilePath);
@@ -49,7 +41,6 @@ namespace TFSPowerTools2
                     var bformatter = new BinaryFormatter();
 
                     bformatter.Serialize(stream, this.csd);
-                    stream.Close();
                 }
             }
         }
@@ -65,7 +56,6 @@ namespace TFSPowerTools2
                         var bformatter = new BinaryFormatter();
 
                         this.csd = (Dictionary<int, ChangeSetDetails>)bformatter.Deserialize(stream);
-                        stream.Close();
                     }
                 }
                 catch (FileNotFoundException)
@@ -97,12 +87,34 @@ namespace TFSPowerTools2
                     if (!keyExists)
                     {
                         string username = m.Groups[2].Value;
-                        DateTime timestamp = DateTime.Parse(m.Groups[3].Value);
-                        cs = new ChangeSetDetails { ChangeSetId = changesetId, TimeStamp = timestamp, Username = username };
+                        string timestamp = m.Groups[3].Value;
+                        cs = new ChangeSetDetails(changesetId, timestamp, username);
 
                         this.csd[changesetId] = cs;
                     }
                 }
+            }
+        }
+
+        [Serializable]
+        private class ChangeSetDetails
+        {
+            private readonly int changeSetId;
+
+            private readonly string timeStamp;
+
+            private readonly string username;
+
+            public ChangeSetDetails(int changeSetId, string timeStamp, string username)
+            {
+                this.changeSetId = changeSetId;
+                this.timeStamp = timeStamp;
+                this.username = username;
+            }
+
+            public override string ToString()
+            {
+                return string.Format("{0}, {1}, {2}", this.changeSetId, this.username, this.timeStamp);
             }
         }
     }
